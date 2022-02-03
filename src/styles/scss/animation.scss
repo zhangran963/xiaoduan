@@ -1,0 +1,23 @@
+@keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+
+
+/* 弹窗动画 */
+@keyframes modal-show-fade-animation{
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+@keyframes modal-show-scale-animation{
+  0% {transform: scale(0.5);}
+  100% {transform: scale(1);}
+}

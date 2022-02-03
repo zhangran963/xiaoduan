@@ -1,0 +1,31 @@
+$multiLineHeight: 1.2em;
+
+/* 
+单行省略
+使用方法:
+@include one-line;
+*/
+@mixin one-line {
+	overflow: hidden;
+	word-break: break-all;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+
+/*
+多行省略
+使用方法:
+@include multi-line(3);
+*/
+@mixin multi-line($num: 2) {
+	overflow: hidden;
+	line-height: $multiLineHeight;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	text-align: justify;
+
+	-webkit-line-clamp: $num;
+	max-height: calc($multiLineHeight * $num);
+}
