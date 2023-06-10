@@ -1,23 +1,33 @@
 <template>
-  <div class="entervideo" @click.stop="onClick">
-    <img class="entervideo-icon" src="/src/assets/video-icon.svg" alt="video" />
+  <div :class="ns.b()" @click.stop="onClick">
+    <img :class="ns.b('icon')" src="/src/assets/video-icon.svg" alt="video" />
   </div>
 </template>
 
 <script lang="ts">
-import { useDialog } from '@/hooks/useDialog'
+import { useNamespace } from '@/hooks/use-namespace'
+import { useDialog } from '@/utils/dialog/index'
 import VideoModal from '@/components/VideoView/modal.vue'
 
 export default {
   name: 'EnterVideo',
   setup() {
-    const $dialog = useDialog()
+    const ns = useNamespace('entervideo')
+    const dialog = useDialog(VideoModal)
 
     const onClick = () => {
-      $dialog.show(VideoModal)
+      dialog.show(
+        {},
+        {
+          close() {
+            dialog.close()
+          },
+        }
+      )
     }
 
     return {
+      ns,
       onClick,
     }
   },
@@ -25,7 +35,7 @@ export default {
 </script>
 
 <style lang="scss">
-.entervideo {
+.#{$ns}-entervideo {
   perspective: 700px;
 
   box-shadow: 0 1px 15px rgba(0, 0, 0, 0.2), 0 3px 25px rgba(0, 0, 0, 0.5);

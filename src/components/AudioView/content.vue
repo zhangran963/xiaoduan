@@ -1,8 +1,10 @@
 <template>
-  <div class="enteraudio-cover" :style="{ transform: `rotate(${deg}deg)` }"></div>
+  <div :class="ns.b()" :style="{ transform: `rotate(${deg}deg)` }"></div>
 </template>
 
 <script lang="ts">
+import { useNamespace } from '@/hooks/use-namespace'
+
 export default {
   props: {
     deg: {
@@ -10,11 +12,17 @@ export default {
       default: 0,
     },
   },
+  setup() {
+    const ns = useNamespace('enteraudio-cover')
+    return {
+      ns,
+    }
+  },
 }
 </script>
 
 <style lang="scss">
-.enteraudio-cover {
+.#{$ns}-enteraudio-cover {
   opacity: 1;
 
   background-color: transparent;

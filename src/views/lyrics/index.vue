@@ -1,14 +1,14 @@
 <template>
-  <header class="lyrics-header">
+  <header :class="ns.b('header')">
     <EnterVideo></EnterVideo>
     <EnterAudio></EnterAudio>
   </header>
-  <main class="lyrics-main">
+  <main :class="ns.b('main')">
     <template v-for="(item, index) of lyrics" :key="index">
-      <ImageWrap v-bind="item" ref="wraps">
+      <ImageWrap ref="wraps" :index="index">
         <img
-          class="lyrics-main-img"
-          :src="`${item.url}?imageMogr2/thumbnail/!20p`"
+          :class="ns.b('main-img')"
+          :src="`${item.url}?imageMogr2/thumbnail/!16p`"
           @click="onPreview(item)"
         />
       </ImageWrap>
@@ -18,6 +18,7 @@
 
 <script lang="ts">
 import ImageWrap from '@/components/ImageWrap.vue'
+import { useNamespace } from '@/hooks/use-namespace'
 import { useList, useScroll, usePreviewImage } from './hooks'
 import { watch, defineAsyncComponent } from 'vue'
 import { nextTick } from 'vue'
@@ -29,6 +30,7 @@ export default {
     EnterAudio: defineAsyncComponent(() => import('@/components/AudioView/Enter.vue')),
   },
   setup() {
+    const ns = useNamespace('lyricList')
     const listInfo = useList()
     const scrollInfo = useScroll()
     const previewInfo = usePreviewImage()
@@ -43,6 +45,7 @@ export default {
     })
 
     return {
+      ns,
       ...listInfo,
       ...scrollInfo,
       ...previewInfo,
@@ -52,42 +55,33 @@ export default {
 </script>
 
 <style lang="scss">
-.lyrics-header {
-  @include flex(space-between);
-  padding: 15px 15px 0;
-  margin-bottom: 30px;
+.#{$ns}-lyricList {
+  &-header {
+    @include flex(space-between);
+    padding: 15px 15px 0;
+    margin-bottom: 30px;
 
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
 
-.lyrics-main {
-  padding-left: 0;
-  padding-right: 0;
+  &-main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 盒子的最小宽度和最大宽度 */
+    grid-gap: 10px; /* 盒子之间的间距 */
+    grid-template-rows: repeat(auto-fill, minmax(300px, auto));
 
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  grid-auto-rows: 170px;
-  grid-gap: 2px; // 行列的间距
-  grid-auto-flow: row dense; // 即使某项超宽, 改变网页宽度时, 也能满填充
-
-  // perspective: 1000px;
-
-  &-img {
-    max-width: 90%;
+    &-img {
+    }
   }
 }
 
 /* 宽大一些的屏幕 */
-@media (min-width: 640px) {
-  .lyrics-main {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    grid-auto-rows: 320px;
-
-    &-img {
-      max-width: 84%;
-    }
-  }
-}
+// @media (min-width: 640px) {
+//   .lyrics-main {
+//     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+//     grid-auto-rows: auto;
+//   }
+// }
 </style>

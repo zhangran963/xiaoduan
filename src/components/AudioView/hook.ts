@@ -26,7 +26,6 @@ export const useAudioContent = () => {
   const pause = async () => {
     isPlaying.value = false
     clearInterval(timer)
-    console.log('pause: ', timer)
   }
 
   return {

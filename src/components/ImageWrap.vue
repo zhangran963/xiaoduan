@@ -1,27 +1,27 @@
 <template>
-  <div class="image-wrap" ref="wrap">
-    <div class="image-wrap-front">
-      <slot v-if="show"></slot>
-    </div>
-    <div class="image-wrap-back" v-if="show"></div>
+  <div :class="ns.b()" ref="wrap" :style="{ visibility: show ? 'visible' : 'hidden' }">
+    <slot v-if="show"></slot>
   </div>
 </template>
 
 <script lang="ts">
-const WHeight = window.innerHeight
-const ratio = 0
+import { useNamespace } from '@/hooks/use-namespace'
+
 export default {
-  // props: {
-  //   topOffset: {
-  //     type: Number,
-  //     default: WHeight * ratio,
-  //   },
-  //   bottomOffset: {
-  //     type: Number,
-  //     default: WHeight * ratio,
-  //   },
-  // },
   inheritAttrs: false,
+  props: {
+    index: {
+      type: Number,
+      default: 0,
+    },
+  },
+  setup() {
+    const ns = useNamespace('imageWrap')
+
+    return {
+      ns,
+    }
+  },
   data() {
     return {
       top: 0,
@@ -36,6 +36,10 @@ export default {
 
     this.top = top
     this.bottom = bottom
+
+    if (this.index < 20) {
+      this.show = true
+    }
   },
   methods: {
     refresh({ topEdge = 0, bottomEdge = 0 } = {}) {
@@ -54,53 +58,28 @@ export default {
 </script>
 
 <style lang="scss">
-.image-wrap {
-  list-style-type: none;
-  -webkit-transform: translate3d(0, 0, 0);
-  -moz-transform: translate3d(0, 0, 0);
-  -ms-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
+.#{$ns}-imageWrap {
+  @include flex();
+  padding: 6px 0;
+  min-height: 180px;
 
-  position: relative;
-  border-radius: 2px;
-  /* Android机兼容性好; Apple兼容性差 */
-  transform-style: preserve-3d;
-  transform-origin: 50%;
-  transition: transform 640ms ease-in-out;
+  img {
+    width: 90%;
+  }
 
   &:nth-child(odd) {
-    .image-wrap-front,
-    .image-wrap-back {
-      background-color: #e7f7ff;
-    }
+    background-color: #e7f7ff;
   }
 
   &:nth-child(even) {
-    .image-wrap-front,
-    .image-wrap-back {
-      background-color: #ece1da;
-    }
+    background-color: #ece1da;
   }
+}
 
-  .image-wrap-front,
-  .image-wrap-back {
-    backface-visibility: hidden;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-
-    @include flex();
-  }
-
-  .image-wrap-front {
-    z-index: 2;
-  }
-
-  .image-wrap-back {
-    z-index: 1;
-    background-color: rgba($color: #000000, $alpha: 0.3);
-    /* 使背面的元素: 面向后 + 倒立 */
-    transform: translateZ(0px) rotateX(180deg) rotateZ(180deg);
+/* 宽大一些的屏幕 */
+@media (min-width: 640px) {
+  .#{$ns}-imageWrap {
+    padding: 10px 0;
   }
 }
 </style>

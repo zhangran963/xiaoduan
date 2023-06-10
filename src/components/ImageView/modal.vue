@@ -1,34 +1,55 @@
 <template>
-  <div class="image-modal" @click.stop="onClose">
-    <img :src="src" />
+  <div :class="ns.b()" @click.stop="$emit('close')">
+    <DanceLoading :class="ns.b('loading')" v-if="loading"></DanceLoading>
+    <img
+      :class="ns.b('img')"
+      :src="src"
+      @loadstart="onLoadStart"
+      @load="onLoadSuccess"
+      v-show="!loading"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { useDialog } from '@/hooks/useDialog'
+import { useNamespace } from '@/hooks/use-namespace'
+import { ref } from 'vue'
+import DanceLoading from '@/components/Loading/dance.vue'
+
 export default {
+  name: 'ImageView',
+  components: {
+    DanceLoading,
+  },
   props: {
     src: {
       type: String,
     },
   },
   setup() {
-    const $dialog = useDialog()
+    const ns = useNamespace('imageModal')
+    const loading = ref(true)
 
-    const onClose = () => {
-      $dialog.close()
+    const onLoadStart = () => {
+      loading.value = true
+    }
+    const onLoadSuccess = () => {
+      loading.value = false
     }
 
     return {
-      onClose,
+      ns,
+      loading,
+      onLoadStart,
+      onLoadSuccess,
     }
   },
 }
 </script>
 
 <style lang="scss">
-.image-modal {
-  img {
+.#{$ns}-imageModal {
+  &-img {
     max-width: 95vw;
     max-height: 95vh;
   }

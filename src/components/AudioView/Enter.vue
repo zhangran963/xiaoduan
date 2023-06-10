@@ -1,14 +1,15 @@
 <template>
-  <div class="enteraudio" @click="toggle()">
+  <div :class="ns.b()" @click="toggle()">
     <EnterAudioContent :deg="rotate"></EnterAudioContent>
   </div>
 </template>
 
 <script lang="ts">
 import { watch } from 'vue'
-import { useDialog } from '@/hooks/useDialog'
+import { useDialog } from '@/utils/dialog/index'
 import { useSound, useAudioContent } from './hook'
 import EnterAudioContent from './content.vue'
+import { useNamespace } from '@/hooks/use-namespace'
 
 export default {
   name: 'EnterAudio',
@@ -16,6 +17,7 @@ export default {
     EnterAudioContent,
   },
   setup() {
+    const ns = useNamespace('enteraudio')
     const sound = useSound()
     const contentInfo = useAudioContent()
     const { rotate } = contentInfo
@@ -31,14 +33,15 @@ export default {
     }
 
     // 显示弹窗, 暂停音乐
-    const $dialog = useDialog()
-    watch($dialog.dialogState, ({ visible }) => {
+    const dialog = useDialog()
+    watch(dialog.store, ({ visible }) => {
       if (visible) {
         toggle(false)
       }
     })
 
     return {
+      ns,
       rotate,
       toggle,
     }
@@ -47,7 +50,7 @@ export default {
 </script>
 
 <style lang="scss">
-.enteraudio {
+.#{$ns}-enteraudio {
   perspective: 700px;
 
   box-shadow: 0 1px 15px rgba(0, 0, 0, 0.2), 0 3px 25px rgba(0, 0, 0, 0.5);

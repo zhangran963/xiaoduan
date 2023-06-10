@@ -1,11 +1,11 @@
 <template>
   <RouterView />
-  <DialogWrapper></DialogWrapper>
+
+  <div id="myContainer"></div>
 </template>
 
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import DialogWrapper from '@/components/Dialog/fade.vue'
+import { RouterView } from 'vue-router'
 </script>
 
 <style lang="scss">

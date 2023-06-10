@@ -1,13 +1,14 @@
 import { defineAsyncComponent, onMounted, ref } from 'vue'
 import { fetchLyricList, type ILyricItem } from '@/services/lyric'
 import ImageWrapVue from '@/components/ImageWrap.vue'
-import { useDialog } from '@/hooks/useDialog'
+import { useDialog } from '@/utils/dialog/index'
 
 export const useList = () => {
   const lyrics = ref<ILyricItem[]>([])
   const getList = async () => {
     try {
       const res = await fetchLyricList()
+      // @ts-ignore
       lyrics.value = res.data
     } catch (err) {
       console.error(err)
@@ -48,13 +49,15 @@ export const useScroll = () => {
 }
 
 export const usePreviewImage = () => {
-  const $dialog = useDialog()
+  const dialog = useDialog(defineAsyncComponent(() => import('@/components/ImageView/modal.vue')))
   const onPreview = (item: ILyricItem) => {
-    $dialog.show(
-      defineAsyncComponent(() => import('@/components/ImageView/modal.vue')),
+    dialog.show(
       {
-        props: {
-          src: item.url,
+        src: item.url,
+      },
+      {
+        close() {
+          dialog.close()
         },
       }
     )
