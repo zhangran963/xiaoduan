@@ -68,20 +68,18 @@ export default {
 
   &-main {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 盒子的最小宽度和最大宽度 */
+    grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); /* 盒子的最小宽度和最大宽度 */
     grid-gap: 10px; /* 盒子之间的间距 */
-    grid-template-rows: repeat(auto-fill, minmax(300px, auto));
-
-    &-img {
-    }
+    grid-auto-rows: auto;
   }
 }
 
 /* 宽大一些的屏幕 */
-// @media (min-width: 640px) {
-//   .lyrics-main {
-//     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-//     grid-auto-rows: auto;
-//   }
-// }
+@media (min-width: 640px) {
+  .#{$ns}-lyricList {
+    &-main {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+  }
+}
 </style>

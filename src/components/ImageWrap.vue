@@ -61,7 +61,7 @@ export default {
 .#{$ns}-imageWrap {
   @include flex();
   padding: 6px 0;
-  min-height: 180px;
+  min-height: 150px;
 
   img {
     width: 90%;

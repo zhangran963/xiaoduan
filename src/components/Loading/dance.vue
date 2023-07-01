@@ -13,9 +13,9 @@
   .loading-dance {
     &-line {
       display: inline-block;
-      width: 15px;
-      height: 15px;
-      border-radius: 15px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
       background-color: $image-bg-color1;
 
       margin-left: 4px;

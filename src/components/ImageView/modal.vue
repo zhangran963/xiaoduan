@@ -49,6 +49,11 @@ export default {
 
 <style lang="scss">
 .#{$ns}-imageModal {
+  width: 100%;
+  height: 100%;
+
+  @include flex();
+
   &-img {
     max-width: 95vw;
     max-height: 95vh;
